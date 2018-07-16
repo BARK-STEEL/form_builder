@@ -1,20 +1,22 @@
 class FormsController < ApplicationController
-  
+
   def index
     @forms = Form.all
   end
-  
+
   def show
     @form = Form.find(params[:id])
   end
-  
+
   def new
     @form = Form.new
     @form.form_fields.build
   end
-  
+
   def create
-    @form = Form.new(params[:form])
+    binding.pry
+    @form = Form.new(form_params)
+    binding.pry
     if @form.save
       flash[:notice] = "Successfully created form."
       redirect_to @form
@@ -22,28 +24,28 @@ class FormsController < ApplicationController
       render :action => 'new'
     end
   end
-  
+
   def edit
     @form = Form.find(params[:id])
   end
-  
+
   def update
     @form = Form.find(params[:id])
-    if @form.update_attributes(params[:form])
+    if @form.update_attributes(form_params)
       flash[:notice] = "Successfully updated form."
       redirect_to @form
     else
       render :action => 'edit'
     end
   end
-  
+
   def destroy
     @form = Form.find(params[:id])
     @form.destroy
     flash[:notice] = "Successfully destroyed form."
     redirect_to forms_url
   end
-  
+
   def sort_fields
     @form = Form.find(params[:id])
     params[:form_fields].each_with_index do |id, index|
@@ -51,5 +53,10 @@ class FormsController < ApplicationController
     end
     render :nothing => true
   end
-  
+
+  def form_params
+    params.require(:form).permit(:name, :email, :description, :published,
+      :form_field_attributes => [:label, :tag, :required, :position, :_destroy])
+  end
+
 end

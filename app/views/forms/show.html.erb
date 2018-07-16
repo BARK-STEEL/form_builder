@@ -20,8 +20,6 @@
   <% end %>
 </ul>
 
-<%= sortable_element("form_fields", :url => sort_fields_form_path(@form), :handle => "handle") %>
-
 <p>
   <%= link_to "View Submissions", form_submissions_path(@form) %> |
   <%= link_to "Submit this form", new_form_submission_path(@form) %>

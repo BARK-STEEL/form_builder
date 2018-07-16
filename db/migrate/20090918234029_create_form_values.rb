@@ -1,4 +1,4 @@
-class CreateFormValues < ActiveRecord::Migration
+class CreateFormValues < ActiveRecord::Migration[5.0]
   def self.up
     create_table :form_values do |t|
       t.integer :submission_id

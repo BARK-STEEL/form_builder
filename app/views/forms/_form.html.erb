@@ -1,5 +1,4 @@
-<% form_for @form do |f| %>
-  <%= f.error_messages %>
+<%= form_for @form do |f| %>
   <h3>Form Info</h3>
   <p>
     <%= f.label :name, "Give this form a name" %><br />
@@ -16,14 +15,37 @@
   <p>
     <%= f.check_box :published %> <%= f.label :published, "Publish this form and accept submissions" %>
   </p>
-  
+
   <h3>Form Fields</h3>
-  
-  <% f.fields_for :form_fields do |ff| %>
-    <%= render :partial => 'form_field', :locals => { :f => ff } %>
-  <% end %>
-  
-  <p><%= add_child_link "Add A Field", f, :form_fields %></p>
+
+  <div id="fields">
+    <%= f.fields_for :form_fields do |ff| %>
+      <div>
+        <%= render :partial => 'form_field', :locals => { :f => ff } %>
+      </div>
+    <% end %>
+  </div>
+
+  <p><%= add_child_link "Add A Field", :form_fields, "fields" %></p>
   <br />
   <p><%= f.submit "Save Form" %></p>
 <% end %>
+
+<script>
+  $('.add_child').click(function() {
+     var association = $(this).attr('data-association');
+     var target = $(this).attr('target');
+     var regexp = new RegExp('new_' + association, 'g');
+     var new_id = new Date().getTime();
+     var Dest = (target == '') ? $(this).parent() : $('#'+target);
+     Dest.append(window[association+'_fields'].replace(regexp, new_id));
+     return false;
+   });
+
+   $(document).delegate('.remove_child','click', function() {
+     $(this).parent().children('.removable')[0].value = 1;
+     $(this).parent().hide();
+     return false;
+   });
+
+</script>

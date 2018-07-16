@@ -1,4 +1,4 @@
-class CreateFormFields < ActiveRecord::Migration
+class CreateFormFields < ActiveRecord::Migration[5.0]
   def self.up
     create_table :form_fields do |t|
       t.integer :form_id
